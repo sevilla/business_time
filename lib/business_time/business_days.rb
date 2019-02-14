@@ -5,8 +5,9 @@ module BusinessTime
       @days = days
     end
 
-    def after(time = Time.now)
-      time = Time.zone ? Time.zone.parse(time.to_s) : Time.parse(time.to_s)
+    def after(time = Time.now.utc)
+      time = Time.parse(time) if time.is_a?(String)
+
       @days.times do
         begin
           time = time + 1.day
@@ -14,12 +15,13 @@ module BusinessTime
       end
       time
     end
-    
+
     alias_method :from_now, :after
     alias_method :since, :after
-    
-    def before(time = Time.now)
-      time = Time.zone ? Time.zone.parse(time.to_s) : Time.parse(time.to_s)
+
+    def before(time = Time.now.utc)
+      time = Time.parse(time) if time.is_a?(String)
+
       @days.times do
         begin
           time = time - 1.day
@@ -27,10 +29,10 @@ module BusinessTime
       end
       time
     end
-    
+
     alias_method :ago, :before
     alias_method :until, :before
-  
-  end  
-  
+
+  end
+
 end
